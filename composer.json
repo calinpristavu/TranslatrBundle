@@ -1,5 +1,5 @@
 {
-    "name": "evozon/translatr",
+    "name": "evozon/TranslatrBundle",
     "description": "Adds integration with multiple translation services, as OneSky, PoEditor, Crowdin, etc.",
     "keywords": ["translation", "translator", "api", "service", "onesky", "poeditor", "crowdin"],
     "homepage": "https://github.com/balazscsaba2006/EvozonTranslatrBundle",
