@@ -1,5 +1,5 @@
 {
-    "name": "evozon/TranslatrBundle",
+    "name": "evozon/translatr-bundle",
     "description": "Adds integration with multiple translation services, as OneSky, PoEditor, Crowdin, etc.",
     "keywords": ["translation", "translator", "api", "service", "onesky", "poeditor", "crowdin"],
     "homepage": "https://github.com/balazscsaba2006/EvozonTranslatrBundle",
@@ -35,7 +35,7 @@
         "symfony/dependency-injection": "To inject stuff"
     },
     "autoload": {
-        "psr-4": {"evozon\\TranslatrBundle\\": "\\EvozonTranslatrBundle"}
+        "psr-4": {"Evozon\\TranslatrBundle": "\\EvozonTranslatrBundle"}
     },
     "extra": {
         "branch-alias": {
