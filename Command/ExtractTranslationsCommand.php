@@ -88,7 +88,7 @@ class ExtractTranslationsCommand extends AbstractCommand
         );
 
         foreach ($extractConfigs as $config) {
-            $this->runCommand($output, 'translation:extract', ['locales' => $locales, '--config' => $config]);
+            $this->runCommand($output, 'translation:update', ['locales' => $locales, '--config' => $config]);
         }
 
         $output->writeln("<info>Translations successfully extracted</info>");
