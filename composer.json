@@ -35,7 +35,7 @@
         "symfony/dependency-injection": "To inject stuff"
     },
     "autoload": {
-        "psr-4": {"Evozon\\TranslatrBundle": ""}
+        "psr-4": {"Evozon\\TranslatrBundle\\": ""}
     },
     "extra": {
         "branch-alias": {
