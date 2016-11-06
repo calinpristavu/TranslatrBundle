@@ -52,6 +52,7 @@ class ExtractTranslationsCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("<info>Extracting translations from the application</info>");
+        $output->writeln("<info>YOLOOOO</info>");
 
         $extractConfigs = $this->supportedConfigs;
         if (null !== $input->getOption('configs')) {
@@ -80,6 +81,7 @@ class ExtractTranslationsCommand extends AbstractCommand
         }
 
         $locales = $this->getContainer()->getParameter('available_locales', []);
+
         $locales = array_map(
             function ($locale) {
                 return strtolower(substr($locale, 0, 2));
