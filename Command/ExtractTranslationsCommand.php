@@ -24,7 +24,12 @@ class ExtractTranslationsCommand extends AbstractCommand
     {
         $this
             ->setName('evozon:translatr:extract')
-            ->setDescription('Extract translations from the application');
+            ->setDescription('Extract translations from the application')
+            ->addArgument(
+                'languages',
+                InputArgument::VALUE_OPTIONAL,
+                'Languages to be extracted'
+            );
     }
 
     /**
@@ -37,19 +42,38 @@ class ExtractTranslationsCommand extends AbstractCommand
     {
         $output->writeln("<info>Extracting translations from the application</info>");
 
-        $locales = $this->getContainer()->getParameter('available_locales', []);
-        $locales = array_map(
+        $availableLocales = $this->getContainer()->getParameter('available_locales', []);
+        $availableLocales = array_map(
             function ($locale) {
                 return strtolower(substr($locale, 0, 2));
             },
-            $locales
+            $availableLocales
         );
+
+        $inputLanguages = explode(',', $input->getArgument('languages'));
+        $filteredInput = array();
+
+        if (empty($inputLanguages)) {
+            $filteredInput = $availableLocales;
+            $output->writeln("<info>No language found! Will extract all available languages!</info>");
+        } else {
+            foreach ($inputLanguages as $language) {
+                if (in_array($language, $availableLocales)) {
+                    $filteredInput[] = $language;
+                } else {
+                    $output->writeln("<warning>Language $language is not available!</warning>");
+                }
+            }
+        }
 
         $commandName = 'translation:update';
         $command = $this->getApplication()->find($commandName);
 
-        foreach ($locales as $locale) {
-            $command->run(new ArrayInput(['command' => $commandName, 'locale' => $locale, '--dump-messages' => true]), $output);
+        foreach ($filteredInput as $locale) {
+            $command->run(
+                new ArrayInput(['command' => $commandName, 'locale' => $locale, '--dump-messages' => true]),
+                $output
+            );
         }
 
         $output->writeln("<info>Translations successfully extracted</info>");
