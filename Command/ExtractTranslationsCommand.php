@@ -53,7 +53,7 @@ class ExtractTranslationsCommand extends AbstractCommand
         $inputLanguages = explode(',', $input->getArgument('languages'));
         $filteredInput = array();
 
-        if (empty($inputLanguages)) {
+        if (empty($inputLanguages[0])) {
             $filteredInput = $availableLocales;
             $output->writeln("<info>No language found! Will extract all available languages!</info>");
         } else {
@@ -61,7 +61,7 @@ class ExtractTranslationsCommand extends AbstractCommand
                 if (in_array($language, $availableLocales)) {
                     $filteredInput[] = $language;
                 } else {
-                    $output->writeln("<warning>Language $language is not available!</warning>");
+                    $output->writeln("<info>Language $language is not available!</info>");
                 }
             }
         }
