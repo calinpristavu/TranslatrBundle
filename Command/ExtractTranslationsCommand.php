@@ -24,14 +24,7 @@ class ExtractTranslationsCommand extends AbstractCommand
     {
         $this
             ->setName('evozon:translatr:extract')
-            ->setDescription('Extract translations from the application')
-            ->addOption(
-                'configs',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Configure what will be extracted. Support arrays as comma separated values. Defaults to all available configurations.',
-                null
-            );
+            ->setDescription('Extract translations from the application');
     }
 
     /**
@@ -54,7 +47,7 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         $commandName = 'translation:update';
         $command = $this->getApplication()->find($commandName);
-        
+
         foreach ($locales as $locale) {
             $command->run(new ArrayInput(['command' => $commandName, 'locale' => $locale, '--dump-messages' => true]), $output);
         }
