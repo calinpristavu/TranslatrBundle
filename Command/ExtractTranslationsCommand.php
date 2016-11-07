@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class ExtractTranslationsCommand
@@ -40,7 +41,9 @@ class ExtractTranslationsCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Extracting translations from the application</info>");
+        $io = new SymfonyStyle($input, $output);
+
+        $io->success('Extracting translations from the application!');
 
         $availableLocales = $this->getContainer()->getParameter('available_locales', []);
         $availableLocales = array_map(
@@ -55,13 +58,13 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         if (empty($inputLanguages[0])) {
             $filteredInput = $availableLocales;
-            $output->writeln("<info>No language found! Will extract all available languages!</info>");
+            $io->warning('No language found! Will extract all available languages!');
         } else {
             foreach ($inputLanguages as $language) {
                 if (in_array($language, $availableLocales)) {
                     $filteredInput[] = $language;
                 } else {
-                    $output->writeln("<info>Language $language is not available!</info>");
+                    $io->error("Language $language is not available!");
                 }
             }
         }
@@ -76,6 +79,6 @@ class ExtractTranslationsCommand extends AbstractCommand
             );
         }
 
-        $output->writeln("<info>Translations successfully extracted</info>");
+        $io->success('Translations successfully extracted');
     }
 }
