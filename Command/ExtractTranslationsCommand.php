@@ -16,15 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ExtractTranslationsCommand extends AbstractCommand
 {
-    /**
-     * @var array
-     */
-    private $supportedConfigs = [
-        'routes',
-        'app',
-        'bundles_messages',
-        'bundles_rest',
-    ];
+
+//      Was in original file
+//    /**
+//     * @var array
+//     */
+//    private $supportedConfigs = [
+//        'routes',
+//        'app',
+//        'bundles_messages',
+//        'bundles_rest',
+//    ];
 
     /**
      * Configure command
@@ -53,31 +55,32 @@ class ExtractTranslationsCommand extends AbstractCommand
     {
         $output->writeln("<info>Extracting translations from the application</info>");
 
-        $extractConfigs = $this->supportedConfigs;
-        if (null !== $input->getOption('configs')) {
-            $configs = array_map('trim', explode(',', $input->getOption('configs')));
-
-            $unsupported = [];
-            foreach ($configs as $config) {
-                if (!in_array($config, $this->supportedConfigs)) {
-                    $unsupported[] = $config;
-                }
-            }
-
-            if ($unsupported) {
-                $output->writeln(
-                    sprintf(
-                        '<error>Unsupported configs given: %sAvailable configs: %s</error>',
-                        implode(',', $unsupported).PHP_EOL,
-                        implode(',', $this->supportedConfigs)
-                    )
-                );
-
-                return;
-            }
-
-            $extractConfigs = $configs;
-        }
+//  WAS IN ORIGINAL FILE
+//        $extractConfigs = $this->supportedConfigs;
+//        if (null !== $input->getOption('configs')) {
+//            $configs = array_map('trim', explode(',', $input->getOption('configs')));
+//
+//            $unsupported = [];
+//            foreach ($configs as $config) {
+//                if (!in_array($config, $this->supportedConfigs)) {
+//                    $unsupported[] = $config;
+//                }
+//            }
+//
+//            if ($unsupported) {
+//                $output->writeln(
+//                    sprintf(
+//                        '<error>Unsupported configs given: %sAvailable configs: %s</error>',
+//                        implode(',', $unsupported).PHP_EOL,
+//                        implode(',', $this->supportedConfigs)
+//                    )
+//                );
+//
+//                return;
+//            }
+//
+//            $extractConfigs = $configs;
+//        }
 
         $locales = $this->getContainer()->getParameter('available_locales', []);
 
@@ -87,10 +90,12 @@ class ExtractTranslationsCommand extends AbstractCommand
             },
             $locales
         );
+        
+        var_dump($locales);die;
 
-        foreach ($extractConfigs as $config) {
-            $this->runCommand($output, 'translation:update', ['locale' => 'en', '--config' => $config]);
-        }
+//        foreach ($extractConfigs as $config) {
+//            //$this->runCommand($output, 'translation:update', ['locales' => $locales, '--config' => $config]);
+//        }
 
         $output->writeln("<info>Translations successfully extracted</info>");
     }
