@@ -1,5 +1,5 @@
 services:
-    oneSky.adapter:
+    onesky.adapter:
         class:        Evozon\TranslatrBundle\Clients\OneSkyAdapter
         arguments:
             - "@event_dispatcher"

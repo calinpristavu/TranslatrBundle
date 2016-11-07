@@ -7,7 +7,7 @@ use Evozon\TranslatrBundle\Events\GotFilesEvent;
 use Evozon\TranslatrBundle\Events\GotLocalesEvent;
 use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
 use Onesky\Api\Client;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OneSkyAdapter extends Client implements ClientInterface
 {
@@ -17,11 +17,11 @@ class OneSkyAdapter extends Client implements ClientInterface
     protected $callStack;
 
     /**
-     * @var EventDispatcher
+     * @var EventDispatcherInterface\
      */
     protected $dispatcher;
 
-    public function __construct(EventDispatcher $dispatcher)
+    public function __construct(EventDispatcherInterface $dispatcher)
     {
         parent::__construct();
 

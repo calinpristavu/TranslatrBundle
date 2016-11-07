@@ -42,6 +42,7 @@ class ExtractTranslationsCommand extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
+        $errorsFound = false;
 
         $io->success('Extracting translations from the application!');
 
@@ -65,6 +66,7 @@ class ExtractTranslationsCommand extends AbstractCommand
                     $filteredInput[] = $language;
                 } else {
                     $io->error("Language $language is not available!");
+                    $errorsFound = true;
                 }
             }
         }
@@ -79,6 +81,10 @@ class ExtractTranslationsCommand extends AbstractCommand
             );
         }
 
-        $io->success('Translations successfully extracted');
+        if (!$errorsFound) {
+            $io->success('Translations successfully extracted');
+        } else {
+            $io->warning('Some errors have occured!');
+        }
     }
 }
