@@ -3,6 +3,7 @@
 namespace Evozon\TranslatrBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -93,8 +94,7 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         $commandName = 'translation:update';
         $command = $this->getApplication()->find($commandName);
-//        $command->run(new ArrayInput(array_merge(['command' => $commandName], ['locale' => 'en'])), $output);
-        $command->run(array((array_merge(['command' => $commandName], ['locale' => 'en']))), $output);
+        $command->run(new ArrayInput(array_merge(['command' => $commandName], ['locale' => 'en'])), $output);
 
 
 //        foreach ($extractConfigs as $config) {
