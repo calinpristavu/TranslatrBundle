@@ -90,10 +90,11 @@ class ExtractTranslationsCommand extends AbstractCommand
             },
             $locales
         );
-        
+
         $commandName = 'translation:update';
         $command = $this->getApplication()->find($commandName);
-        $command->run(new ArrayInput(array_merge(['command' => $commandName], ['locale' => 'en'])), $output);
+//        $command->run(new ArrayInput(array_merge(['command' => $commandName], ['locale' => 'en'])), $output);
+        $command->run(array((array_merge(['command' => $commandName], ['locale' => 'en']))), $output);
 
 
 //        foreach ($extractConfigs as $config) {
