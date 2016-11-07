@@ -34,8 +34,9 @@ class UploadCommand extends AbstractCommand
     {
         $output->writeln("<info>Uploading translations to OneSky</info>");
 
+        //evozon_translatr_uploader
         $this->getContainer()
-            ->get('evozon_translatr_uploader')
+            ->get('oneSky.adapter')
             ->upload();
 
         $output->writeln("<info>Translations successfully updated in OneSky</info>");
