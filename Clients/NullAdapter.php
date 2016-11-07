@@ -43,4 +43,22 @@ class NullAdapter implements ClientInterface
     {
         return ['null'];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upload($project, $mappings, $locales)
+    {
+        return ['null'];
+    }
+
+    /**
+     * Adds a new response in the callstack
+     *
+     * @param array $response
+     */
+    public function addInCallstack($response)
+    {
+        // TODO: Implement addInCallstack() method.
+    }
 }

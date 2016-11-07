@@ -17,7 +17,7 @@ class OneSkyAdapter extends Client implements ClientInterface
     protected $callStack;
 
     /**
-     * @var EventDispatcherInterface\
+     * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
@@ -73,6 +73,31 @@ class OneSkyAdapter extends Client implements ClientInterface
 
         $gotTranslationsEvent = new GotTranslationsEvent($response, $this);
         $this->dispatcher->dispatch(GotTranslationsEvent::NAME, $gotTranslationsEvent);
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upload($project, $mappings, $locales)
+    {
+        $response = array();
+
+        $locales = $this->getLocales($project);
+        foreach ($locales as $locale) {
+            foreach ($mappings as $mapping) {
+                $response[] = $this->files('upload', [
+                    'project_id'             => $project,
+                    'file'                   => $mapping->getOutputFilename(null, $locale),
+                    'file_format'            => 'GNU_PO',
+                    'locale'                 => $locale,
+                    'is_keeping_all_strings' => false,
+                ]);
+            }
+        }
+
+        //Add upload event dispatch here
 
         return $response;
     }

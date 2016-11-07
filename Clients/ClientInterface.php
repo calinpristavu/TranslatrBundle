@@ -33,6 +33,18 @@ interface ClientInterface
     public function getTranslations($project, $source, $locale);
 
     /**
+     * Uploads files to client
+     *
+     * @param $project
+     * @param $mappings
+     * @param $locales
+     * @param $isKeepingAllStrings
+     *
+     * @return array
+     */
+    public function upload($project, $mappings, $locales);
+
+    /**
      * Gets the responses
      *
      * @return array

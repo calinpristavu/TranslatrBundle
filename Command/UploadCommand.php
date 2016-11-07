@@ -4,6 +4,7 @@ namespace Evozon\TranslatrBundle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class UploadCommand
@@ -32,13 +33,15 @@ class UploadCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Uploading translations to OneSky</info>");
+        $io = new SymfonyStyle($input, $output);
+
+        $io->success('Uploading translations to client');
 
         //evozon_translatr_uploader
         $this->getContainer()
             ->get('onesky.adapter')
             ->upload();
 
-        $output->writeln("<info>Translations successfully updated in OneSky</info>");
+        $io->success('Translations successfully updated in client');
     }
 }
