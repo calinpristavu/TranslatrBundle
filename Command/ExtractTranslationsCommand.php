@@ -17,18 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ExtractTranslationsCommand extends AbstractCommand
 {
-
-//      Was in original file
-//    /**
-//     * @var array
-//     */
-//    private $supportedConfigs = [
-//        'routes',
-//        'app',
-//        'bundles_messages',
-//        'bundles_rest',
-//    ];
-
     /**
      * Configure command
      */
@@ -56,35 +44,7 @@ class ExtractTranslationsCommand extends AbstractCommand
     {
         $output->writeln("<info>Extracting translations from the application</info>");
 
-//  WAS IN ORIGINAL FILE
-//        $extractConfigs = $this->supportedConfigs;
-//        if (null !== $input->getOption('configs')) {
-//            $configs = array_map('trim', explode(',', $input->getOption('configs')));
-//
-//            $unsupported = [];
-//            foreach ($configs as $config) {
-//                if (!in_array($config, $this->supportedConfigs)) {
-//                    $unsupported[] = $config;
-//                }
-//            }
-//
-//            if ($unsupported) {
-//                $output->writeln(
-//                    sprintf(
-//                        '<error>Unsupported configs given: %sAvailable configs: %s</error>',
-//                        implode(',', $unsupported).PHP_EOL,
-//                        implode(',', $this->supportedConfigs)
-//                    )
-//                );
-//
-//                return;
-//            }
-//
-//            $extractConfigs = $configs;
-//        }
-
         $locales = $this->getContainer()->getParameter('available_locales', []);
-
         $locales = array_map(
             function ($locale) {
                 return strtolower(substr($locale, 0, 2));
@@ -94,12 +54,10 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         $commandName = 'translation:update';
         $command = $this->getApplication()->find($commandName);
-        $command->run(new ArrayInput(['command' => $commandName, 'locale' => 'en', '--dump-messages' => true]), $output);
-
-
-//        foreach ($extractConfigs as $config) {
-//            //$this->runCommand($output, 'translation:update', ['locales' => $locales, '--config' => $config]);
-//        }
+        
+        foreach ($locales as $locale) {
+            $command->run(new ArrayInput(['command' => $commandName, 'locale' => $locale, '--dump-messages' => true]), $output);
+        }
 
         $output->writeln("<info>Translations successfully extracted</info>");
     }
