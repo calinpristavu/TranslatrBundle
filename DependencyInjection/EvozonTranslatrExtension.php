@@ -39,23 +39,11 @@ class EvozonTranslatrExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $clientDefinition = new Definition();
-
-        switch ('%evozon_translatr.adapter%') {
-            case 'onesky':
-                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\OneSkyAdapter');
-                $clientDefinition->addArgument('@event_dispatcher');
-                break;
-            case 'null':
-                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\NullAdapter');
-                break;
-        }
-
         $container->addDefinitions([
             'evozon_translatr_client' => $this->getClientDefinition($config),
             'evozon_translatr_downloader' => $this->getDownloaderDefinition($config),
             'evozon_translatr_uploader' => $this->getUploaderDefinition($config),
-            'client' => $clientDefinition,
+            'client' => $this->constructClient($configs),
         ]);
     }
 
@@ -134,5 +122,18 @@ class EvozonTranslatrExtension extends Extension
         }
 
         return $service;
+    }
+
+    private function constructClient($configs)
+    {
+        $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\NullAdapter');
+        switch ($configs[0]['adapter']) {
+            case 'onesky':
+                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\OneSkyAdapter');
+                $clientDefinition->addArgument('@event_dispatcher');
+                break;
+        }
+
+        return $clientDefinition;
     }
 }
