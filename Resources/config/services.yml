@@ -4,5 +4,14 @@ services:
         arguments:
             - "@event_dispatcher"
 
+    null.adapter:
+        class:        Evozon\TranslatrBundle\Clients\NullAdapter
+
+    client:
+
     uploader:
         class:        Evozon\TranslatrBundle\OneSky\Uploader
+        arguments:
+            - '@client'
+            - '%evozon_translatr.project%'
+            - '%evozon_translatr.locale_format%'

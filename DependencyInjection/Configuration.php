@@ -33,6 +33,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('project')
                     ->isRequired()
                 ->end()
+
                 ->arrayNode('locale_format')
                     ->addDefaultsIfNotSet()
                     ->children()
