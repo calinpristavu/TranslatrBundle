@@ -130,7 +130,7 @@ class EvozonTranslatrExtension extends Extension
         switch ($configs[0]['adapter']) {
             case 'onesky':
                 $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\OneSkyAdapter');
-                $clientDefinition->addArgument('@event_dispatcher');
+                $clientDefinition->addArgument(new Reference('event_dispatcher'));
                 $clientDefinition->addArgument($configs[0]['project']);
                 $clientDefinition->addArgument($configs[0]['locale_format']);
                 break;
