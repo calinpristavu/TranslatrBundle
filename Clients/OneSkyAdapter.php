@@ -80,11 +80,10 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function upload($project, $mappings, $locales)
+    public function upload($project, $mappings, $locales, $isKeepingAllStrings)
     {
         $response = array();
 
-        $locales = $this->getLocales($project);
         foreach ($locales as $locale) {
             foreach ($mappings as $mapping) {
                 $response[] = $this->files('upload', [
@@ -92,7 +91,7 @@ class OneSkyAdapter extends Client implements ClientInterface
                     'file'                   => $mapping->getOutputFilename(null, $locale),
                     'file_format'            => 'GNU_PO',
                     'locale'                 => $locale,
-                    'is_keeping_all_strings' => false,
+                    'is_keeping_all_strings' => $isKeepingAllStrings,
                 ]);
             }
         }

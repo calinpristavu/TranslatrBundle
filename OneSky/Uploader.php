@@ -21,18 +21,12 @@ class Uploader extends AbstractService
      */
     public function upload()
     {
-        $locales = $this->getAllLocales();
-        foreach ($locales as $locale) {
-            foreach ($this->mappings as $mapping) {
-                $this->resultStack[] = $this->client->files('upload', [
-                    'project_id'             => $this->project,
-                    'file'                   => $mapping->getOutputFilename(null, $locale),
-                    'file_format'            => 'GNU_PO',
-                    'locale'                 => $locale,
-                    'is_keeping_all_strings' => $this->isKeepingAllStrings,
-                ]);
-            }
-        }
+        $this->resultStack[] = $this->client->upload(
+            $this->project,
+            $this->mappings,
+            $this->getAllLocales(),
+            $this->isKeepingAllStrings
+        );
 
         return $this;
     }

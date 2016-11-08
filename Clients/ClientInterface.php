@@ -42,7 +42,7 @@ interface ClientInterface
      *
      * @return array
      */
-    public function upload($project, $mappings, $locales);
+    public function upload($project, $mappings, $locales, $isKeepingAllStrings);
 
     /**
      * Gets the responses

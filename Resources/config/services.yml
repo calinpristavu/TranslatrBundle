@@ -3,3 +3,6 @@ services:
         class:        Evozon\TranslatrBundle\Clients\OneSkyAdapter
         arguments:
             - "@event_dispatcher"
+
+    uploader:
+        class:        Evozon\TranslatrBundle\OneSky\Uploader

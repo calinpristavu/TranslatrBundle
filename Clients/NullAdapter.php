@@ -47,7 +47,7 @@ class NullAdapter implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function upload($project, $mappings, $locales)
+    public function upload($project, $mappings, $locales, $isKeepingAllStrings)
     {
         return ['null'];
     }

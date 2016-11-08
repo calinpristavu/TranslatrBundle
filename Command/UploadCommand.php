@@ -39,7 +39,7 @@ class UploadCommand extends AbstractCommand
 
         //evozon_translatr_uploader
         $this->getContainer()
-            ->get('onesky.adapter')
+            ->get('uploader')
             ->upload();
 
         $io->success('Translations successfully updated in client');
