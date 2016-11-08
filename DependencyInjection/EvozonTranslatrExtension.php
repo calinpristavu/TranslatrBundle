@@ -39,14 +39,15 @@ class EvozonTranslatrExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $clientDefinition = new Definition();
+
         switch ('%evozon_translatr.adapter%') {
             case 'onesky':
-                $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\OneSkyAdapter', array (
-                    '@event_dispatcher'
-                ));
+                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\OneSkyAdapter');
+                $clientDefinition->addArgument('@event_dispatcher');
                 break;
             case 'null':
-                $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\NullAdapter');
+                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\NullAdapter');
                 break;
         }
 
