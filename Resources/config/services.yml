@@ -8,7 +8,7 @@ services:
         class:        Evozon\TranslatrBundle\Clients\NullAdapter
 
     client:
-
+        class:        Evozon\TranslatrBundle\Clients\NullAdapter
 
     uploader:
         class:        Evozon\TranslatrBundle\OneSky\Uploader
