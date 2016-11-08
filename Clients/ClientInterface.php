@@ -57,4 +57,20 @@ interface ClientInterface
      * @param array $response
      */
     public function addInCallstack($response);
+
+    /**
+     * Gets the locale format
+     *
+     * @return array
+     */
+    public function getLocaleFormat();
+
+    /**
+     * Gets the project id
+     *
+     * @return int
+     */
+    public function getProject();
+
+
 }

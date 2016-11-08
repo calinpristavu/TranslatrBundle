@@ -17,11 +17,28 @@ class OneSkyAdapter extends Client implements ClientInterface
     protected $callStack;
 
     /**
+     * @var int
+     */
+    protected $project;
+
+    /**
+     * @var
+     */
+    protected $localeFormat;
+
+    /**
      * @var EventDispatcherInterface
      */
     protected $dispatcher;
 
-    public function __construct(EventDispatcherInterface $dispatcher)
+    /**
+     * OneSkyAdapter constructor.
+     *
+     * @param EventDispatcherInterface  $dispatcher
+     * @param int                       $project
+     * @param array                     $localeFormat
+     */
+    public function __construct(EventDispatcherInterface $dispatcher, $project, $localeFormat)
     {
         parent::__construct();
 
@@ -29,6 +46,9 @@ class OneSkyAdapter extends Client implements ClientInterface
 
         $this->dispatcher = $dispatcher;
         $dispatcher->addSubscriber(new ResponseSubscriber());
+
+        $this->project = $project;
+        $this->localeFormat = $localeFormat;
     }
 
     /**
@@ -115,5 +135,21 @@ class OneSkyAdapter extends Client implements ClientInterface
     public function getCallStack()
     {
         return $this->callStack;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocaleFormat()
+    {
+        return $this->localeFormat;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProject()
+    {
+        return $this->project;
     }
 }

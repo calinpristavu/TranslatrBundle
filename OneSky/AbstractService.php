@@ -18,28 +18,18 @@ class AbstractService
     /** @var ClientInterface */
     protected $client;
 
-    /** @var int */
-    protected $project;
-
     /** @var Mapping[] */
     protected $mappings = [];
-
-    /** @var array $localeFormat */
-    protected $localeFormat = [];
 
     /** @var string[] */
     protected $resultStack;
 
     /**
      * @param ClientInterface $client
-     * @param int $project
-     * @param array $localeFormat
      */
-    public function __construct(ClientInterface $client, $project, $localeFormat)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
-        $this->project = $project;
-        $this->localeFormat = $localeFormat;
     }
 
     /**
@@ -59,7 +49,7 @@ class AbstractService
      */
     protected function getAllLocales()
     {
-        $raw = $this->client->getLocales($this->project);
+        $raw = $this->client->getLocales($this->client->getProject());
         $this->resultStack[] = $raw;
         $response = json_decode($raw, true);
         $data = $response['data'];
@@ -77,7 +67,7 @@ class AbstractService
      */
     protected function getAllSources()
     {
-        $raw = $this->client->getFiles($this->project);
+        $raw = $this->client->getFiles($this->client->getProject());
         $this->resultStack[] = $raw;
         $response = json_decode($raw, true);
         $data = $response['data'];
@@ -101,8 +91,8 @@ class AbstractService
             return $locale['locale'];
         }
 
-        $intersect = array_intersect_key($locale, array_flip($this->localeFormat['parts']));
+        $intersect = array_intersect_key($locale, array_flip($this->client->getLocaleFormat()['parts']));
 
-        return (count($intersect)) ? implode($this->localeFormat['separator'], $intersect) : null;
+        return (count($intersect)) ? implode($this->client->getLocaleFormat()['separator'], $intersect) : null;
     }
 }

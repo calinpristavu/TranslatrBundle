@@ -3,6 +3,8 @@ services:
         class:        Evozon\TranslatrBundle\Clients\OneSkyAdapter
         arguments:
             - '@event_dispatcher'
+            - '%evozon_translatr.project%'
+            - '%evozon_translatr.locale_format%'
 
     null.adapter:
         class:        Evozon\TranslatrBundle\Clients\NullAdapter
@@ -14,5 +16,3 @@ services:
         class:        Evozon\TranslatrBundle\OneSky\Uploader
         arguments:
             - '@client'
-            - '%evozon_translatr.project%'
-            - '%evozon_translatr.locale_format%'
