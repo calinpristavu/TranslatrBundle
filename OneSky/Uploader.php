@@ -22,7 +22,7 @@ class Uploader extends AbstractService
     public function upload()
     {
         $this->resultStack[] = $this->client->upload(
-            $this->project,
+            $this->client->getProject(),
             $this->mappings,
             $this->getAllLocales(),
             $this->isKeepingAllStrings
