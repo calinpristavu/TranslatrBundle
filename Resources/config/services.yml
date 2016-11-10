@@ -3,3 +3,8 @@ services:
         class:        Evozon\TranslatrBundle\OneSky\Uploader
         arguments:
             - '@client'
+
+    downloader:
+        class:        Evozon\TranslatrBundle\OneSky\Downloader
+        arguments:
+            - '@client'

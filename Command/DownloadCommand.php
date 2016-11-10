@@ -5,6 +5,7 @@ namespace Evozon\TranslatrBundle\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class DownloadCommand
@@ -34,16 +35,18 @@ class DownloadCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Downloading translations from OneSky</info>");
+        $io = new SymfonyStyle($input, $output);
+
+        $io->success("Downloading translations from OneSky");
 
         $this->getContainer()
-            ->get('evozon_translatr_downloader')
+            ->get('downloader')
             ->download();
 
-        $output->writeln("<info>Translations successfully updated from OneSky</info>");
+        $io->success("Translations successfully updated from OneSky");
 
         if ($input->getOption('clear-cache')) {
-            $output->writeln("<info>Clearing cache after dumping translations</info>");
+            $io->success("Clearing cache after dumping translations");
             $this->clearCache($output);
         }
     }

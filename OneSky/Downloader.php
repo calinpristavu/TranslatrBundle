@@ -107,7 +107,7 @@ class Downloader extends AbstractService
      */
     private function fetch($source, $locale)
     {
-        return $this->client->getTranslations($this->project, $source, $locale);
+        return $this->client->getTranslations($this->client->getProject(), $source, $locale);
     }
 
     /**
