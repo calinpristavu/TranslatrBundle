@@ -18,7 +18,7 @@ class ResponseSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function logResponse(GotFilesEvent $event)
+    public function onFilesEvent(GotFilesEvent $event)
     {
         $event->logResponse();
     }
