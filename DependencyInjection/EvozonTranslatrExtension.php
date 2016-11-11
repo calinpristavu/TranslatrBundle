@@ -40,92 +40,14 @@ class EvozonTranslatrExtension extends Extension
         $loader->load('services.yml');
 
         $container->addDefinitions([
-            'evozon_translatr_client' => $this->getClientDefinition($config),
-            'evozon_translatr_downloader' => $this->getDownloaderDefinition($config),
-            'evozon_translatr_uploader' => $this->getUploaderDefinition($config),
-            'client' => $this->constructClient($configs),
+            'client' => $this->constructClient($config),
         ]);
-    }
-
-    /**
-     * @param $config
-     *
-     * @return Definition
-     */
-    private function getClientDefinition($config)
-    {
-        $client = new Definition('Onesky\Api\Client');
-        $client->addMethodCall('setApiKey', [$config['api_key']]);
-        $client->addMethodCall('setSecret', [$config['secret']]);
-
-        return $client;
-    }
-
-    /**
-     * @param $config
-     *
-     * @return Definition
-     */
-    private function getDownloaderDefinition($config)
-    {
-        return $this->getServiceDefinition(
-            'Evozon\TranslatrBundle\OneSky\Downloader',
-            $config,
-            self::DOWNLOAD_MAPPING_FILENAME_POSTFIX
-        );
-    }
-
-    /**
-     * @param $config
-     *
-     * @return Definition
-     */
-    private function getUploaderDefinition($config)
-    {
-        return $this->getServiceDefinition('Evozon\TranslatrBundle\OneSky\Uploader', $config);
-    }
-
-    /**
-     * @param string $class
-     * @param array  $config
-     * @param mixed  $postfix
-     *
-     * @return Definition
-     */
-    private function getServiceDefinition($class, $config, $postfix = null)
-    {
-        $service = new Definition($class, [
-            new Reference('evozon_translatr_client'),
-            $config['project'],
-            $config['locale_format'],
-        ]);
-
-        foreach ($config['mappings'] as $mappingConfig) {
-            $mappingConfig['locales'] = array_map(
-                function ($locale) {
-                    return strtolower(substr($locale, 0, 2));
-                },
-                $mappingConfig['locales']
-            );
-
-            $service->addMethodCall('addMapping', [
-                new Definition(
-                    'Evozon\TranslatrBundle\OneSky\Mapping',
-                    [
-                        isset($mappingConfig['sources']) ? $mappingConfig['sources'] : [],
-                        isset($mappingConfig['locales']) ? $mappingConfig['locales'] : [],
-                        isset($mappingConfig['output']) ? $mappingConfig['output'] : self::DEFAULT_OUTPUT,
-                        $postfix,
-                    ]
-                ),
-            ]);
-        }
-
-        return $service;
     }
 
     private function constructClient($configs)
     {
+        var_dump($configs);die;
+
         $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\NullAdapter');
         switch ($configs[0]['adapter']) {
             case 'onesky':
