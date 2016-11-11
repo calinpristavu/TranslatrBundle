@@ -2,7 +2,6 @@
 
 namespace Evozon\TranslatrBundle\DependencyInjection;
 
-use Onesky\Api\Client;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
@@ -44,21 +43,19 @@ class EvozonTranslatrExtension extends Extension
         ]);
     }
 
-    private function constructClient($configs)
+    private function constructClient($config)
     {
-        var_dump($configs);die;
-
         $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\NullAdapter');
-        switch ($configs[0]['adapter']) {
+        switch ($config['adapter']) {
             case 'onesky':
                 $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\OneSkyAdapter');
 
                 $clientDefinition->addArgument(new Reference('event_dispatcher'));
-                $clientDefinition->addArgument($configs[0]['project']);
-                $clientDefinition->addArgument($configs[0]['locale_format']);
+                $clientDefinition->addArgument($config['project']);
+                $clientDefinition->addArgument($config['locale_format']);
 
-                $clientDefinition->addMethodCall('setApiKey', [$configs[0]['api_key']]);
-                $clientDefinition->addMethodCall('setSecret', [$configs[0]['secret']]);
+                $clientDefinition->addMethodCall('setApiKey', [$config['api_key']]);
+                $clientDefinition->addMethodCall('setSecret', [$config['secret']]);
                 break;
         }
 
