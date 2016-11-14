@@ -3,8 +3,10 @@ services:
         class:        Evozon\TranslatrBundle\OneSky\Uploader
         arguments:
             - '@client'
+            - '%kernel.root_dir%'
 
     downloader:
         class:        Evozon\TranslatrBundle\OneSky\Downloader
         arguments:
             - '@client'
+            - '%kernel.root_dir%'

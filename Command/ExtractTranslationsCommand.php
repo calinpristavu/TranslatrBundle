@@ -76,7 +76,11 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         foreach ($filteredInput as $locale) {
             $command->run(
-                new ArrayInput(['command' => $commandName, 'locale' => $locale, '--force' => true]),
+                new ArrayInput([
+                    'command' => $commandName,
+                    'locale' => $locale,
+                    '--force' => true,
+                    '--output-format' => 'po']),
                 $output
             );
         }

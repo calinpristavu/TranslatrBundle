@@ -3,9 +3,6 @@
 namespace Evozon\TranslatrBundle\OneSky;
 
 use Evozon\TranslatrBundle\Clients\ClientInterface;
-use Evozon\TranslatrBundle\OneSky\Mapping;
-use Onesky\Api\Client;
-
 /**
  * Class AbstractService
  *
@@ -24,12 +21,17 @@ class AbstractService
     /** @var string[] */
     protected $resultStack;
 
+    /** @var String */
+    protected $rootDir;
+
     /**
      * @param ClientInterface $client
+     * @param $rootDir
      */
-    public function __construct(ClientInterface $client)
+    public function __construct(ClientInterface $client, $rootDir)
     {
         $this->client = $client;
+        $this->rootDir = $rootDir;
     }
 
     /**

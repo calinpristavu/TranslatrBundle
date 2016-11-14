@@ -6,6 +6,7 @@ use Evozon\TranslatrBundle\Events\EventSubscribers\ResponseSubscriber;
 use Evozon\TranslatrBundle\Events\GotFilesEvent;
 use Evozon\TranslatrBundle\Events\GotLocalesEvent;
 use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
+use Evozon\TranslatrBundle\Events\UploadEvent;
 use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,12 +32,13 @@ class OneSkyAdapter extends Client implements ClientInterface
      */
     protected $dispatcher;
 
+
     /**
      * OneSkyAdapter constructor.
      *
-     * @param EventDispatcherInterface  $dispatcher
-     * @param int                       $project
-     * @param array                     $localeFormat
+     * @param EventDispatcherInterface $dispatcher
+     * @param int $project
+     * @param array $localeFormat
      */
     public function __construct(EventDispatcherInterface $dispatcher, $project, $localeFormat)
     {
@@ -100,15 +102,15 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function upload($project, $mappings, $locales, $isKeepingAllStrings)
+    public function upload($project, $files, $locales, $isKeepingAllStrings)
     {
         $response = array();
 
         foreach ($locales as $locale) {
-            foreach ($mappings as $mapping) {
+            foreach ($files as $file) {
                 $response[] = $this->files('upload', [
                     'project_id'             => $project,
-                    'file'                   => $mapping->getOutputFilename(null, $locale),
+                    'file'                   => $file,
                     'file_format'            => 'GNU_PO',
                     'locale'                 => $locale,
                     'is_keeping_all_strings' => $isKeepingAllStrings,
@@ -116,7 +118,8 @@ class OneSkyAdapter extends Client implements ClientInterface
             }
         }
 
-        //Add upload event dispatch here
+        $uploadEvent = new UploadEvent($response, $this);
+        $this->dispatcher->dispatch(UploadEvent::NAME, $uploadEvent);
 
         return $response;
     }

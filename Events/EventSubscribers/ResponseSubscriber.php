@@ -5,6 +5,7 @@ namespace Evozon\TranslatrBundle\Events\EventSubscribers;
 use Evozon\TranslatrBundle\Events\GotFilesEvent;
 use Evozon\TranslatrBundle\Events\GotLocalesEvent;
 use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
+use Evozon\TranslatrBundle\Events\UploadEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class ResponseSubscriber implements EventSubscriberInterface
@@ -15,6 +16,7 @@ class ResponseSubscriber implements EventSubscriberInterface
             GotFilesEvent::NAME => 'onFilesEvent',
             GotTranslationsEvent::NAME => 'onTranslationsEvent',
             GotLocalesEvent::NAME => 'onLocalesEvent',
+            UploadEvent::NAME => 'onUpdateEvent',
         );
     }
 
@@ -24,6 +26,11 @@ class ResponseSubscriber implements EventSubscriberInterface
     }
 
     public function onTranslationsEvent(GotTranslationsEvent $event)
+    {
+        $event->logResponse();
+    }
+
+    public function onUpdateEvent(UploadEvent $event)
     {
         $event->logResponse();
     }

@@ -2,9 +2,6 @@
 
 namespace Evozon\TranslatrBundle\OneSky;
 
-use Symfony\Component\Translation\Loader\PoFileLoader;
-use Evozon\TranslatrBundle\Translation\Catalogue\MergeOperation;
-use Symfony\Component\Translation\Dumper\PoFileDumper;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -22,12 +19,9 @@ class Downloader extends AbstractService
     public function download()
     {
         $sources = $this->getAllSources();
-        $locales = $this->getAllLocales();
 
         foreach ($sources as $source) {
-            foreach ($locales as $locale) {
-                $this->dump($source, $locale);
-            }
+            $this->dump($source, explode('.', $source)[1]);
         }
 
         return $this;
@@ -41,50 +35,27 @@ class Downloader extends AbstractService
      */
     private function dump($source, $locale)
     {
-        $content = null;
-        foreach ($this->mappings as $mapping) {
-            if (!$mapping->useLocale($locale) || !$mapping->useSource($source)) {
-                continue;
-            }
+        $content = $this->fetch($source, $locale);
 
-            if ($content === null) {
-                $content = $this->fetch($source, $locale);
-            }
+        $this->write(
+            $source,
+            $this->cleanupContent($content)
+        );
 
-            $this->write(
-                $mapping->getOutputFilename($source, $locale),
-                $this->cleanupContent($content)
-            );
-
-            $this->merge($mapping, $source, $locale);
-        }
+        $this->merge($source);
 
         return $this;
     }
 
     /**
-     * @param Mapping $mapping
-     * @param string  $source
-     * @param string  $locale
+     * Moves $source file to translations file and deletes temporary file from OneSky
+     * @param $source   String
      */
-    private function merge(Mapping $mapping, $source, $locale)
+    public function merge($source)
     {
-        $oneSkyFile = $mapping->getOutputFilename($source, $locale);
-        $localFile = $mapping->getOriginalOutputFilename($source, $locale);
-        $domain = $mapping->getOutputFileDomain($source, $locale);
-
-        $poFileLoader = new PoFileLoader();
-        $oneSkyCatalogue = $poFileLoader->load($oneSkyFile, $locale, $domain);
-        $localCatalogue = $poFileLoader->load($localFile, $locale, $domain);
-
-        // delete temporary file downloaded from OneSky
         $fs = new Filesystem();
-        $fs->remove($oneSkyFile);
-
-        $mergeOperation = new MergeOperation($oneSkyCatalogue, $localCatalogue, $locale);
-        $poFileDumper = new PoFileDumper();
-        $poFileDumper->setBackup(false);
-        $poFileDumper->dump($mergeOperation->getResult(), ['path' => dirname($localFile)]);
+        $fs->copy($source, 'app/Resources/translations/' . $source, true);
+        $fs->remove($source);
     }
 
     /**
