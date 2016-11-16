@@ -24,7 +24,12 @@ class DownloadCommand extends AbstractCommand
         $this
             ->setName('evozon:translatr:download')
             ->setDescription('Download translations from OneSky')
-            ->setDefinition([new InputOption('clear-cache', null, InputOption::VALUE_NONE, 'Clear the cache after dump')]);
+            ->setDefinition([new InputOption(
+                'clear-cache',
+                null,
+                InputOption::VALUE_NONE,
+                'Clear the cache after dump'
+            )]);
     }
 
     /**

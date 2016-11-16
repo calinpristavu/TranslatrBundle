@@ -37,7 +37,6 @@ class UploadCommand extends AbstractCommand
 
         $io->success('Uploading translations to client');
 
-        //evozon_translatr_uploader
         $this->getContainer()
             ->get('uploader')
             ->upload();

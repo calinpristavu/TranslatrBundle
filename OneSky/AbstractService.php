@@ -3,6 +3,7 @@
 namespace Evozon\TranslatrBundle\OneSky;
 
 use Evozon\TranslatrBundle\Clients\ClientInterface;
+
 /**
  * Class AbstractService
  *
