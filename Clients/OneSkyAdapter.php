@@ -103,18 +103,36 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function upload($project, $files, $locales, $isKeepingAllStrings)
+    public function upload($files)
     {
-        $response = array();
+        $raw = $this->getLocales($this->getProject());
+        $response = json_decode($raw, true);
+        $data = $response['data'];
+
+        $locales = array_map(
+            function ($item) {
+                if (!$item['region']) {
+                    return $item['locale'];
+                }
+
+                $intersect = array_intersect_key(
+                    $item,
+                    array_flip($this->getLocaleFormat()['parts'])
+                );
+
+                return (count($intersect)) ? implode($this->getLocaleFormat()['separator'], $intersect) : null;
+            },
+            $data
+        );
 
         foreach ($locales as $locale) {
             foreach ($files as $file) {
                 $response[] = $this->files('upload', [
-                    'project_id'             => $project,
+                    'project_id'             => $this->getProject(),
                     'file'                   => $file,
                     'file_format'            => 'GNU_PO',
                     'locale'                 => $locale,
-                    'is_keeping_all_strings' => $isKeepingAllStrings,
+                    'is_keeping_all_strings' => false,
                 ]);
             }
         }
@@ -128,8 +146,19 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function download($sources)
+    public function download()
     {
+        $raw = $this->getFiles($this->getProject());
+        $response = json_decode($raw, true);
+        $data = $response['data'];
+
+        $sources = array_map(
+            function ($item) {
+                return $item['file_name'];
+            },
+            $data
+        );
+
         $response = array();
 
         foreach ($sources as $source) {

@@ -35,23 +35,18 @@ interface ClientInterface
     /**
      * Uploads files to client
      *
-     * @param $project
-     * @param $mappings
-     * @param $locales
-     * @param $isKeepingAllStrings
+     * @param $files
      *
      * @return array    Response
      */
-    public function upload($project, $mappings, $locales, $isKeepingAllStrings);
+    public function upload($files);
 
     /**
      * Downloads files from client
      *
-     * @param   $sources  array     Names of files in client
-     *
      * @return            array     Response
      */
-    public function download($sources);
+    public function download();
 
     /**
      * Gets the locale format

@@ -1,17 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: calinpristavu
- * Date: 02.11.2016
- * Time: 15:31
- */
 
 namespace Evozon\TranslatrBundle\Clients;
 
-
 class NullAdapter implements ClientInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -47,12 +39,12 @@ class NullAdapter implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function upload($project, $mappings, $locales, $isKeepingAllStrings)
+    public function upload($files)
     {
         return ['null'];
     }
 
-    public function download($sources)
+    public function download()
     {
         return ['null'];
     }
