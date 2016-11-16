@@ -16,7 +16,9 @@ class Downloader extends AbstractService
      */
     public function download()
     {
-        $this->client->download();
+        $result = $this->client->download();
+
+        $this->resultStack[] = $result;
 
         return $this;
     }

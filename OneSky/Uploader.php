@@ -21,7 +21,9 @@ class Uploader extends AbstractService
      */
     public function upload()
     {
-        $this->resultStack[] = $this->client->upload($this->getUploadFileNames('po'));
+        $result = $this->client->upload($this->getUploadFileNames('po'));
+
+        $this->resultStack[] = $result;
 
         return $this;
     }
