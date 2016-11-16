@@ -52,6 +52,11 @@ class NullAdapter implements ClientInterface
         return ['null'];
     }
 
+    public function download($sources)
+    {
+        return ['null'];
+    }
+
     /**
      * {@inheritdoc}
      */

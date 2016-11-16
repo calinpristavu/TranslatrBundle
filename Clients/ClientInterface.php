@@ -40,23 +40,18 @@ interface ClientInterface
      * @param $locales
      * @param $isKeepingAllStrings
      *
-     * @return array
+     * @return array    Response
      */
     public function upload($project, $mappings, $locales, $isKeepingAllStrings);
 
     /**
-     * Gets the responses
+     * Downloads files from client
      *
-     * @return array
-     */
-    public function getCallStack();
-
-    /**
-     * Adds a new response in the callstack
+     * @param   $sources  array     Names of files in client
      *
-     * @param array $response
+     * @return            array     Response
      */
-    public function addInCallstack($response);
+    public function download($sources);
 
     /**
      * Gets the locale format
@@ -72,5 +67,17 @@ interface ClientInterface
      */
     public function getProject();
 
+    /**
+     * Gets the responses
+     *
+     * @return array
+     */
+    public function getCallStack();
 
+    /**
+     * Adds a new response in the callstack
+     *
+     * @param array $response
+     */
+    public function addInCallstack($response);
 }

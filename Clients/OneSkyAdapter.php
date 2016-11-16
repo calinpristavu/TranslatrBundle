@@ -9,6 +9,7 @@ use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
 use Evozon\TranslatrBundle\Events\UploadEvent;
 use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class OneSkyAdapter extends Client implements ClientInterface
 {
@@ -120,6 +121,33 @@ class OneSkyAdapter extends Client implements ClientInterface
 
         $uploadEvent = new UploadEvent($response, $this);
         $this->dispatcher->dispatch(UploadEvent::NAME, $uploadEvent);
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function download($sources)
+    {
+        $response = array();
+
+        foreach ($sources as $source) {
+            $locale = explode('.', $source)[1];
+
+            $content = $this->getTranslations($this->getProject(), $source, $locale);
+
+            //Remove empty lines from content
+            $content = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $content);
+
+            $response[] = $content;
+
+            $fs = new Filesystem();
+            $fs->dumpFile($source, $content);
+
+            $fs->copy($source, 'app/Resources/translations/' . $source, true);
+            $fs->remove($source);
+        }
 
         return $response;
     }
