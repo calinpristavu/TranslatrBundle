@@ -36,7 +36,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('adapter')
                     ->isRequired()
                     ->validate()
-                        ->ifNotInArray(['onesky', 'empty'])
+                        ->ifNotInArray(['phraseapp', 'onesky', 'empty'])
                         ->thenInvalid('Invalid adapter!')
                     ->end()
                 ->end()

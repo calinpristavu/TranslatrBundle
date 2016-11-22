@@ -57,6 +57,16 @@ class EvozonTranslatrExtension extends Extension
                 $clientDefinition->addMethodCall('setApiKey', [$config['api_key']]);
                 $clientDefinition->addMethodCall('setSecret', [$config['secret']]);
                 break;
+
+            case 'phraseapp':
+                $clientDefinition->setClass('Evozon\TranslatrBundle\Clients\PhraseAppAdapter');
+
+                $clientDefinition->addArgument(new Reference('event_dispatcher'));
+                $clientDefinition->addArgument($config['project']);
+                $clientDefinition->addArgument($config['locale_format']);
+
+                $clientDefinition->addMethodCall('setApiKey', [$config['api_key']]);
+                break;
         }
 
         return $clientDefinition;
