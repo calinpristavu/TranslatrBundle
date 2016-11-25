@@ -4,12 +4,11 @@ namespace Evozon\TranslatrBundle\Clients;
 
 use Evozon\TranslatrBundle\Events\EventSubscribers\ResponseSubscriber;
 use Onesky\Api\Client;
-use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 // Access token : 42412d61e38ddc607551e765065a6bb131fd689a9dbf345bb9e23e78e5daf8cf
-// Project ID : a002bccbe9465b8b039b0829fb148832
+// Project ID : 36db9371b3fad0e2de4421a9c3edded2
 
 class PhraseAppAdapter extends Client implements ClientInterface
 {
