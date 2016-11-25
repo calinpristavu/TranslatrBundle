@@ -4,11 +4,12 @@ namespace Evozon\TranslatrBundle\Clients;
 
 use Evozon\TranslatrBundle\Events\EventSubscribers\ResponseSubscriber;
 use Onesky\Api\Client;
+use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 // Access token : 42412d61e38ddc607551e765065a6bb131fd689a9dbf345bb9e23e78e5daf8cf
-// Project ID : 900090880e75f475788b5f7ff503d5c0
+// Project ID : a002bccbe9465b8b039b0829fb148832
 
 class PhraseAppAdapter extends Client implements ClientInterface
 {
@@ -103,7 +104,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
         curl_setopt_array(
             $ch,
             array(
-                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/:project_id/locales/$localeId/translations",
+                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$project/locales/$localeId/translations",
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_USERPWD => "$this->apiKey:"
             )
@@ -119,39 +120,30 @@ class PhraseAppAdapter extends Client implements ClientInterface
      */
     public function upload($files)
     {
-        $raw = $this->getLocales($this->getProject());
-        $response = json_decode($raw, true);
-        $locales = array();
+        $response = array();
 
-        foreach ($response as $locale) {
-            $locales[] = $locale['name'];
-        }
+        foreach ($files as $filePath) {
+            $fileLocale = $this->getLocaleFromFile($filePath);
+            $localeId = $this->getLocaleId($fileLocale);
 
-        foreach ($locales as $locale) {
+            $cFile = curl_file_create($filePath);
 
-            $localeId = $this->getLocaleId($locale);
-
-            foreach ($files as $file) {
-
-                $cFile = curl_file_create($file);
-
-                $ch = curl_init();
-                curl_setopt_array(
-                    $ch,
-                    array(
-                        CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$this->getProject()/uploads",
-                        CURLOPT_RETURNTRANSFER => 1,
-                        CURLOPT_USERPWD => "$this->apiKey:",
-                        CURLOPT_POST => 1,
-                        CURLOPT_POSTFIELDS => array(
-                            "file" => $cFile,
-                            "locale_id" => $localeId
-                        )
+            $ch = curl_init();
+            curl_setopt_array(
+                $ch,
+                array(
+                    CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$this->project/uploads",
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_USERPWD => "$this->apiKey:",
+                    CURLOPT_POST => 1,
+                    CURLOPT_POSTFIELDS => array(
+                        "file" => $cFile,
+                        "locale_id" => $localeId
                     )
-                );
+                )
+            );
 
-                $response[] = curl_exec($ch);
-            }
+            $response[] = curl_exec($ch);
         }
 
         return $response;
@@ -164,6 +156,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
     {
         $raw = $this->getFiles($this->getProject());
         $response = json_decode($raw);
+
         $sources = array();
         foreach ($response as $file) {
             $sources[] = $file->filename;
@@ -175,6 +168,8 @@ class PhraseAppAdapter extends Client implements ClientInterface
             $locale = explode('.', $source)[1];
 
             $content = $this->getTranslations($this->getProject(), $source, $locale);
+
+            $content = $this->convertToPo($content, $locale);
 
             //Remove empty lines from content
             $content = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $content);
@@ -236,12 +231,57 @@ class PhraseAppAdapter extends Client implements ClientInterface
         $raw = $this->getLocales($this->getProject());
         $response = json_decode($raw, true);
 
-        foreach ($response as $locale) {
-            if ($locale['name'] === $locale) {
-                return $locale['id'];
+        foreach ($response as $loc) {
+            if ($loc['name'] === $locale) {
+                return $loc['id'];
             }
         }
 
         return 0;
+    }
+
+    /**
+     * Converts to .po text format
+     *
+     * @param $content  String      text to be formatted
+     * @param $locale   String      the language
+     *
+     * @return string               text in .po format
+     */
+    private function convertToPo($content, $locale)
+    {
+        $content = json_decode($content);
+        foreach ($content as $key => $translation) {
+            $content[$key] = [$translation->content,$translation->key->name];
+        }
+
+        $po = "msgid \"\"
+msgstr \"\"
+\"Content-Type: text/plain; charset=UTF-8\"
+\"Content-Transfer-Encoding: 8bit\"
+\"Language: $locale\"
+
+";
+
+        foreach ($content as $translation) {
+            $po .= 'msgid' . ' ' . $translation[1] . PHP_EOL . 'msgstr' . ' ' . $translation[0] . PHP_EOL;
+        }
+
+        return $po;
+    }
+
+    /**
+     * Returns the locale of a file from its full path
+     *
+     * @param $filePath     String          The full path of the file
+     *
+     * @return              String          The locale
+     */
+    private function getLocaleFromFile($filePath)
+    {
+        $fileName = array_values(array_slice(explode('/', $filePath), -1))[0];
+        $fileLocale = explode('.', $fileName)[1];
+
+        return $fileLocale;
     }
 }

@@ -11,6 +11,10 @@ use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+//Api: eTr4ohoDFHYwC50PKcHYGQqQaSUj9Q7d
+//Secret: OYXDZEZtpxsu15gDmPm2nDiBjtCdjq5X
+//Project: 85960
+
 class OneSkyAdapter extends Client implements ClientInterface
 {
     /**
