@@ -259,11 +259,11 @@ msgstr \"\"
 \"Content-Type: text/plain; charset=UTF-8\"
 \"Content-Transfer-Encoding: 8bit\"
 \"Language: $locale\"
-
+\n
 ";
 
         foreach ($content as $translation) {
-            $po .= 'msgid' . ' ' . $translation[1] . PHP_EOL . 'msgstr' . ' ' . $translation[0] . PHP_EOL;
+            $po .= 'msgid' . ' ' . "\"$translation[1]\"" . PHP_EOL . 'msgstr' . ' ' . "\"$translation[0]\"" . PHP_EOL;
         }
 
         return $po;

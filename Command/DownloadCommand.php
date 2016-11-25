@@ -42,13 +42,13 @@ class DownloadCommand extends AbstractCommand
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->success("Downloading translations from OneSky");
+        $io->success("Downloading translations from client");
 
         $this->getContainer()
             ->get('downloader')
             ->download();
 
-        $io->success("Translations successfully updated from OneSky");
+        $io->success("Translations successfully downloaded from client");
 
         if ($input->getOption('clear-cache')) {
             $io->success("Clearing cache after dumping translations");
