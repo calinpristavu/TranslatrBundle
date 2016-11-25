@@ -7,6 +7,7 @@ use Evozon\TranslatrBundle\Events\GotFilesEvent;
 use Evozon\TranslatrBundle\Events\GotLocalesEvent;
 use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
 use Evozon\TranslatrBundle\Events\UploadEvent;
+use Evozon\TranslatrBundle\Events\DownloadEvent;
 use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -181,6 +182,9 @@ class OneSkyAdapter extends Client implements ClientInterface
             $fs->copy($source, 'app/Resources/translations/' . $source, true);
             $fs->remove($source);
         }
+
+        $downloadEvent = new DownloadEvent($response, $this);
+        $this->dispatcher->dispatch(DownloadEvent::NAME, $downloadEvent);
 
         return $response;
     }

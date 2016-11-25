@@ -3,6 +3,11 @@
 namespace Evozon\TranslatrBundle\Clients;
 
 use Evozon\TranslatrBundle\Events\EventSubscribers\ResponseSubscriber;
+use Evozon\TranslatrBundle\Events\GotFilesEvent;
+use Evozon\TranslatrBundle\Events\GotLocalesEvent;
+use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
+use Evozon\TranslatrBundle\Events\UploadEvent;
+use Evozon\TranslatrBundle\Events\DownloadEvent;
 use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -69,6 +74,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
 
         $response = curl_exec($ch);
 
+        $gotLocalesEvent = new GotLocalesEvent($response, $this);
+        $this->dispatcher->dispatch(GotLocalesEvent::NAME, $gotLocalesEvent);
+
         return $response;
     }
 
@@ -88,6 +96,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
         );
 
         $response = curl_exec($ch);
+
+        $gotFilesEvent = new GotFilesEvent($response, $this);
+        $this->dispatcher->dispatch(GotFilesEvent::NAME, $gotFilesEvent);
 
         return $response;
     }
@@ -110,6 +121,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
         );
 
         $response = curl_exec($ch);
+
+        $gotTranslationsEvent = new GotTranslationsEvent($response, $this);
+        $this->dispatcher->dispatch(GotTranslationsEvent::NAME, $gotTranslationsEvent);
 
         return $response;
     }
@@ -144,6 +158,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
 
             $response[] = curl_exec($ch);
         }
+
+        $uploadEvent = new UploadEvent($response, $this);
+        $this->dispatcher->dispatch(UploadEvent::NAME, $uploadEvent);
 
         return $response;
     }
@@ -181,6 +198,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
             $fs->copy($source, 'app/Resources/translations/' . $source, true);
             $fs->remove($source);
         }
+
+        $downloadEvent = new DownloadEvent($response, $this);
+        $this->dispatcher->dispatch(DownloadEvent::NAME, $downloadEvent);
 
         return $response;
     }

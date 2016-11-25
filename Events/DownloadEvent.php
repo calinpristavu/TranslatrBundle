@@ -6,11 +6,11 @@ use Evozon\TranslatrBundle\Clients\ClientInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The upload event is dispatched each time files are uploaded to the client
+ * The download event is dispatched each time files are downloaded from the client
  */
-class UploadEvent extends Event
+class DownloadEvent extends Event
 {
-    const NAME = 'upload';
+    const NAME = 'download';
 
     /**
      * @var array
