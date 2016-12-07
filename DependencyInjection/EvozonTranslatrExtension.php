@@ -39,6 +39,8 @@ class EvozonTranslatrExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->addCompilerPass(new Pass());
+
         $container->addDefinitions([
             'client' => $this->constructClient($config),
         ]);
