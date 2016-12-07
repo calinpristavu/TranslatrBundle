@@ -2,6 +2,7 @@
 
 namespace Evozon\TranslatrBundle\DependencyInjection;
 
+use Evozon\TranslatrBundle\DependencyInjection\Compiler\Pass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;

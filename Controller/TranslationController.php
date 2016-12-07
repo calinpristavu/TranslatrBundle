@@ -24,7 +24,6 @@ class TranslationController extends Controller
      */
     public function extractAction(Request $request)
     {
-        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
     }
 
     /**
@@ -38,7 +37,10 @@ class TranslationController extends Controller
      */
     public function uploadAction(Request $request)
     {
-        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
+        $uploader = $this->container->get('uploader');
+        $uploader->upload();
+
+        //Mai trebuie sa returnez ceva response si sa fac ajaxul
     }
 
     /**
@@ -52,6 +54,9 @@ class TranslationController extends Controller
      */
     public function downloadAction(Request $request)
     {
-        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
+        $downloader = $this->container->get('downloader');
+        $downloader->download();
+
+        //Mai trebuie sa returnez ceva response si sa fac ajaxul
     }
 }
