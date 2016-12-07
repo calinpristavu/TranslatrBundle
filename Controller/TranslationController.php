@@ -19,10 +19,12 @@ class TranslationController extends Controller
      * @Route(name="extract_translations", path="/translations/extract")
      *
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function extractAction(Request $request)
     {
-        return $this->render('test.html.twig', array());
+        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
     }
 
     /**
@@ -31,10 +33,12 @@ class TranslationController extends Controller
      * @Route(name="upload_translations", path="/translations/upload")
      *
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function uploadAction(Request $request)
     {
-        return $this->render('test.html.twig', array());
+        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
     }
 
     /**
@@ -43,9 +47,11 @@ class TranslationController extends Controller
      * @Route(name="download_translations", path="/translations/download")
      *
      * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function downloadAction(Request $request)
     {
-        return $this->render('test.html.twig', array());
+        return $this->render('EvozonTranslatrBundle::test.html.twig', array());
     }
 }
