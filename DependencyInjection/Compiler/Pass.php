@@ -15,7 +15,7 @@ class Pass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $templates = $container->getParameter('data_collector.templates');
-        $templates['translation'] = '@EvozonTranslatrBundle/Resources/WebProfilerBundle/views/translation.html.twig';
+        $templates['translation'] = '@EvozonTranslatrBundle/Resources/views/translation.html.twig';
         $container->setParameter('data_collector.templates', $templates);
     }
 }
