@@ -4,7 +4,10 @@ namespace Evozon\TranslatrBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class TranslationController
@@ -17,46 +20,90 @@ class TranslationController extends Controller
      * Extracts all translations from application and creates translations files
      *
      * @Route(name="extract_translations", path="/translations/extract")
+     * @return JsonResponse
+     * @internal param Request $request
      *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function extractAction(Request $request)
+    public function extractAction()
     {
+        $kernel = $this->get('kernel');
+
+        $availableLocales = $this->getParameter('available_locales');
+        $availableLocales = array_map(
+            function ($locale) {
+                return strtolower(substr($locale, 0, 2));
+            },
+            $availableLocales
+        );
+
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $output = new NullOutput();
+        foreach ($availableLocales as $locale) {
+            $input = new ArrayInput(array(
+                'command' => 'translation:update',
+                'locale' => $locale,
+                '--force' => true,
+                '--output-format' => 'po'
+            ));
+
+            try {
+                $application->run($input, $output);
+            } catch (\Exception $e) {
+                return new JsonResponse([
+                    'success' => false
+                ]);
+            }
+        }
+
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     /**
      * Uploads translations to adapter
      *
      * @Route(name="upload_translations", path="/translations/upload")
-     *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      */
-    public function uploadAction(Request $request)
+    public function uploadAction()
     {
-        $uploader = $this->container->get('uploader');
-        $uploader->upload();
+        try {
+            $uploader = $this->container->get('uploader');
+            $uploader->upload();
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'success' => false
+            ]);
+        }
 
-        //Mai trebuie sa returnez ceva response si sa fac ajaxul
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 
     /**
      * Downloads translations from adapter
      *
      * @Route(name="download_translations", path="/translations/download")
-     *
-     * @param Request $request
-     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      */
-    public function downloadAction(Request $request)
+    public function downloadAction()
     {
-        $downloader = $this->container->get('downloader');
-        $downloader->download();
+        try {
+            $downloader = $this->container->get('downloader');
+            $downloader->download();
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'success' => false
+            ]);
+        }
 
-        //Mai trebuie sa returnez ceva response si sa fac ajaxul
+        return new JsonResponse([
+            'success' => true
+        ]);
     }
 }

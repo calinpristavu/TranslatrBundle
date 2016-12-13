@@ -2,6 +2,69 @@
 
 {% import _self as helper %}
 
+{% block head %}
+
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#extractButton").click(function (event){
+                event.preventDefault();
+                $.ajax({
+                    url: "http://firstproj.dev/app_dev.php/translations/extract",
+                    dataType: "json",
+                    success: function(data) {
+                        if(data['success']) {
+                            alert('Success!');
+                        }
+                        else {
+                            alert('Failed!');
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $("#uploadButton").click(function (event){
+                event.preventDefault();
+                $.ajax({
+                    url: "http://firstproj.dev/app_dev.php/translations/upload",
+                    dataType: "json",
+                    success: function(data) {
+                        if(data['success']) {
+                            alert('Success!');
+                        }
+                        else {
+                            alert('Failed!');
+                        }
+                    }
+                });
+                return false;
+            });
+
+            $("#downloadButton").click(function (event){
+                event.preventDefault();
+                $.ajax({
+                    url: "http://firstproj.dev/app_dev.php/translations/download",
+                    dataType: "json",
+                    success: function(data) {
+                        if(data['success']) {
+                            alert('Success!');
+                        }
+                        else {
+                            alert('Failed!');
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+
+    {{ parent() }}
+
+{% endblock %}
+
 {% block toolbar %}
     {% if collector.messages|length %}
         {% set icon %}
@@ -94,9 +157,9 @@
         {% endif %}
     {% endfor %}
 
-    <a href="http://firstproj.dev/app_dev.php/translations/extract">Extract</a> <br />
-    <a href="http://firstproj.dev/app_dev.php/translations/extract">Upload</a> <br />
-    <a href="http://firstproj.dev/app_dev.php/translations/extract">Download</a> <br />
+    <a name="extractButton" id="extractButton" href="http://firstproj.dev/app_dev.php/translations/extract">Extract</a> <br />
+    <a name="uploadButton" id="uploadButton" href="http://firstproj.dev/app_dev.php/translations/extract">Upload</a> <br />
+    <a name="downloadButton" id="downloadButton" href="http://firstproj.dev/app_dev.php/translations/extract">Download</a> <br />
     <br />
 
     <div class="sf-tabs">
