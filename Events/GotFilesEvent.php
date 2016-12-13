@@ -6,7 +6,10 @@ use Evozon\TranslatrBundle\Clients\ClientInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The got.files event is dispatched each time is get the files from the server
+ * Class GotFilesEvent
+ *
+ * @package     Evozon\TranslatrBundle\Events
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class GotFilesEvent extends Event
 {
@@ -22,6 +25,12 @@ class GotFilesEvent extends Event
      */
     protected $adapter;
 
+    /**
+     * GotFilesEvent constructor
+     *
+     * @param array             $response
+     * @param ClientInterface   $adapter
+     */
     public function __construct($response, $adapter)
     {
         $this->response = $response;
@@ -29,13 +38,16 @@ class GotFilesEvent extends Event
     }
 
     /**
-     * @return array the response
+     * @return array
      */
     public function getResponse()
     {
         return $this->response;
     }
 
+    /**
+     * Adds response in the adapter's callstack
+     */
     public function logResponse()
     {
         $this->adapter->addInCallstack($this->response);

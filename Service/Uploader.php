@@ -1,12 +1,12 @@
 <?php
 
-namespace Evozon\TranslatrBundle\OneSky;
+namespace Evozon\TranslatrBundle\Service;
 
 /**
  * Class Uploader
  *
  * @package   Evozon\TranslatrBundle\OneSky
- * @author    Balazs Csaba <csaba.balazs@evozon.com>
+ * @author    Ovidiu Enache <i.ovidiuenache@yahoo.com>
  * @copyright 2016 Evozon (https://www.evozon.com)
  */
 class Uploader extends AbstractService
@@ -30,8 +30,10 @@ class Uploader extends AbstractService
 
     /**
      * Gets all files in Resources/translations with given extension
-     * @param $fileExtension
-     * @return array
+     *
+     * @param   String    $fileExtension
+     *
+     * @return  array
      */
     protected function getUploadFileNames($fileExtension)
     {

@@ -6,7 +6,10 @@ use Evozon\TranslatrBundle\Clients\ClientInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The got.translations event is dispatched each time is get the translations from the server
+ * Class GotTranslationsEvent
+ *
+ * @package     Evozon\TranslatrBundle\Events
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class GotTranslationsEvent extends Event
 {
@@ -22,6 +25,12 @@ class GotTranslationsEvent extends Event
      */
     protected $adapter;
 
+    /**
+     * GotTranslationsEvent constructor
+     *
+     * @param array             $response
+     * @param ClientInterface   $adapter
+     */
     public function __construct($response, $adapter)
     {
         $this->response = $response;
@@ -36,6 +45,9 @@ class GotTranslationsEvent extends Event
         return $this->response;
     }
 
+    /**
+     * Adds response in the adapter's callstack
+     */
     public function logResponse()
     {
         $this->adapter->addInCallstack($this->response);

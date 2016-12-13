@@ -1,12 +1,12 @@
 <?php
 
-namespace Evozon\TranslatrBundle\OneSky;
+namespace Evozon\TranslatrBundle\Service;
 
 /**
  * Class Downloader
  *
  * @package   Evozon\TranslatrBundle\OneSky
- * @author    Balazs Csaba <csaba.balazs@evozon.com>
+ * @author    Ovidiu Enache <i.ovidiuenache@yahoo.com>
  * @copyright 2016 Evozon (https://www.evozon.com)
  */
 class Downloader extends AbstractService

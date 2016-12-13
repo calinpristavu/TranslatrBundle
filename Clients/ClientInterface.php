@@ -2,49 +2,56 @@
 
 namespace Evozon\TranslatrBundle\Clients;
 
+/**
+ * Interface ClientInterface
+ *
+ * @package     Evozon\TranslatrBundle\Clients
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
 interface ClientInterface
 {
     /**
      * Gets all locales defined in the translation platform
      *
-     * @param $project
-     * @return array
+     * @param   int     $projectId
+     *
+     * @return  array
      */
-    public function getLocales($project);
+    public function getLocales($projectId);
 
     /**
      * Gets all files uploaded to the translation platform
      *
-     * @param $project
+     * @param   int     $projectId
      *
-     * @return array
+     * @return  array
      */
-    public function getFiles($project);
+    public function getFiles($projectId);
 
     /**
      * Gets the translation file content for the selected locale
      *
-     * @param $project
-     * @param $source
-     * @param string $locale
+     * @param int       $projectId
+     * @param String    $source
+     * @param String    string $locale
      *
      * @return array
      */
-    public function getTranslations($project, $source, $locale);
+    public function getTranslations($projectId, $source, $locale);
 
     /**
-     * Uploads files to client
+     * Uploads extracted translation files to adapter
      *
-     * @param $files
+     * @param   array       $files
      *
-     * @return array    Response
+     * @return  array       Response
      */
     public function upload($files);
 
     /**
-     * Downloads files from client
+     * Downloads files from adapter
      *
-     * @return            array     Response
+     * @return array
      */
     public function download();
 

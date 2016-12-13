@@ -6,7 +6,10 @@ use Evozon\TranslatrBundle\Clients\ClientInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * The upload event is dispatched each time files are uploaded to the client
+ * Class UploadEvent
+ *
+ * @package     Evozon\TranslatrBundle\Events
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class UploadEvent extends Event
 {
@@ -22,6 +25,12 @@ class UploadEvent extends Event
      */
     protected $adapter;
 
+    /**
+     * UploadEvent constructor
+     *
+     * @param array             $response
+     * @param ClientInterface   $adapter
+     */
     public function __construct($response, $adapter)
     {
         $this->response = $response;
@@ -36,6 +45,9 @@ class UploadEvent extends Event
         return $this->response;
     }
 
+    /**
+     * Adds response in the adapter's callstack
+     */
     public function logResponse()
     {
         $this->adapter->addInCallstack($this->response);

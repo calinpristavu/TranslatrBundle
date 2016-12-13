@@ -12,17 +12,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 /**
  * Class TranslationController
  *
- * @author Ovidiu Enache
+ * @package     Evozon\TranslatrBundle\Controller
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class TranslationController extends Controller
 {
     /**
-     * Extracts all translations from application and creates translations files
+     * Extracts all translations from app and creates .po translations files
      *
      * @Route(name="extract_translations", path="/translations/extract")
-     * @return JsonResponse
-     * @internal param Request $request
      *
+     * @return JsonResponse
      */
     public function extractAction()
     {
@@ -39,6 +39,7 @@ class TranslationController extends Controller
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $output = new NullOutput();
+
         foreach ($availableLocales as $locale) {
             $input = new ArrayInput(array(
                 'command' => 'translation:update',
@@ -65,8 +66,8 @@ class TranslationController extends Controller
      * Uploads translations to adapter
      *
      * @Route(name="upload_translations", path="/translations/upload")
-     * @return \Symfony\Component\HttpFoundation\Response
      *
+     * @return JsonResponse
      */
     public function uploadAction()
     {
@@ -88,8 +89,8 @@ class TranslationController extends Controller
      * Downloads translations from adapter
      *
      * @Route(name="download_translations", path="/translations/download")
-     * @return \Symfony\Component\HttpFoundation\Response
      *
+     * @return JsonResponse
      */
     public function downloadAction()
     {

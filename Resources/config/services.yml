@@ -1,12 +1,12 @@
 services:
     uploader:
-        class:        Evozon\TranslatrBundle\OneSky\Uploader
+        class:        Evozon\TranslatrBundle\Service\Uploader
         arguments:
             - '@client'
             - '%kernel.root_dir%'
 
     downloader:
-        class:        Evozon\TranslatrBundle\OneSky\Downloader
+        class:        Evozon\TranslatrBundle\Service\Downloader
         arguments:
             - '@client'
             - '%kernel.root_dir%'

@@ -2,12 +2,18 @@
 
 namespace Evozon\TranslatrBundle\Clients;
 
+/**
+ * Class NullAdapter
+ *
+ * @package     Evozon\TranslatrBundle\Clients
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
 class NullAdapter implements ClientInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getLocales($project)
+    public function getLocales($projectId)
     {
         return ['null'];
     }
@@ -15,7 +21,7 @@ class NullAdapter implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getFiles($project)
+    public function getFiles($projectId)
     {
         return ['null'];
     }
@@ -23,7 +29,7 @@ class NullAdapter implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations($project, $source, $locale)
+    public function getTranslations($projectId, $source, $locale)
     {
         return ['null'];
     }

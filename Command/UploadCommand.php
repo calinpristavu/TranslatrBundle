@@ -9,9 +9,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Class UploadCommand
  *
- * @package   Evozon\TranslatrBundle\Command
- * @author    Balazs Csaba <csaba.balazs@evozon.com>
- * @copyright 2016 Evozon (https://www.evozon.com)
+ * @package     Evozon\TranslatrBundle\Command
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class UploadCommand extends AbstractCommand
 {

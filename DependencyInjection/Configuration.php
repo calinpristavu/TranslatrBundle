@@ -10,6 +10,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *
  * @package   Evozon\TranslatrBundle\DependencyInjection
  * @author    Balazs Csaba <csaba.balazs@evozon.com>
+ * @author    Ovidiu Enache <i.ovidiuenache@yahoo.com>
  * @copyright 2016 Evozon (https://www.evozon.com)
  */
 class Configuration implements ConfigurationInterface

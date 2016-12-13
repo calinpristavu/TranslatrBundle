@@ -12,10 +12,12 @@ use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-//Api: eTr4ohoDFHYwC50PKcHYGQqQaSUj9Q7d
-//Secret: OYXDZEZtpxsu15gDmPm2nDiBjtCdjq5X
-//Project: 85960
-
+/**
+ * Class OneSkyAdapter
+ *
+ * @package     Evozon\TranslatrBundle\Clients
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
 class OneSkyAdapter extends Client implements ClientInterface
 {
     /**
@@ -29,7 +31,7 @@ class OneSkyAdapter extends Client implements ClientInterface
     protected $project;
 
     /**
-     * @var
+     * @var String
      */
     protected $localeFormat;
 
@@ -40,11 +42,11 @@ class OneSkyAdapter extends Client implements ClientInterface
 
 
     /**
-     * OneSkyAdapter constructor.
+     * Class constructor.
      *
-     * @param EventDispatcherInterface $dispatcher
-     * @param int $project
-     * @param array $localeFormat
+     * @param EventDispatcherInterface  $dispatcher
+     * @param int                       $project
+     * @param array                     $localeFormat
      */
     public function __construct(EventDispatcherInterface $dispatcher, $project, $localeFormat)
     {
@@ -62,9 +64,9 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocales($project)
+    public function getLocales($projectId)
     {
-        $response = $this->projects('languages', ['project_id' => $project]);
+        $response = $this->projects('languages', ['project_id' => $projectId]);
 
         $gotLocalesEvent = new GotLocalesEvent($response, $this);
         $this->dispatcher->dispatch(GotLocalesEvent::NAME, $gotLocalesEvent);
@@ -75,9 +77,9 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getFiles($project)
+    public function getFiles($projectId)
     {
-        $response = $this->files('list', ['project_id' => $project, 'per_page' => 100]);
+        $response = $this->files('list', ['project_id' => $projectId, 'per_page' => 100]);
 
         $gotFilesEvent = new GotFilesEvent($response, $this);
         $this->dispatcher->dispatch(GotFilesEvent::NAME, $gotFilesEvent);
@@ -88,12 +90,12 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations($project, $source, $locale)
+    public function getTranslations($projectId, $source, $locale)
     {
         $response = $this->translations(
             'export',
             [
-                'project_id'       => $project,
+                'project_id'       => $projectId,
                 'locale'           => $locale,
                 'source_file_name' => $source,
             ]

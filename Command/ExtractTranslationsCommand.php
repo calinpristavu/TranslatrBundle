@@ -11,10 +11,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Class ExtractTranslationsCommand
  *
- * @package   Evozon\TranslatrBundle\Command
- * @author    Balazs Csaba <csaba.balazs@evozon.com>
- * @author    Calin Bolea <calin.bolea@evozon.com>
- * @copyright 2016 Evozon (https://www.evozon.com)
+ * @package     Evozon\TranslatrBundle\Command
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
  */
 class ExtractTranslationsCommand extends AbstractCommand
 {

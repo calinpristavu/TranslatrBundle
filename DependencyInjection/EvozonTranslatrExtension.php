@@ -2,7 +2,6 @@
 
 namespace Evozon\TranslatrBundle\DependencyInjection;
 
-use Evozon\TranslatrBundle\DependencyInjection\Compiler\Pass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
@@ -15,6 +14,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * @package   Evozon\TranslatrBundle\DependencyInjection
  * @author    Balazs Csaba <csaba.balazs@evozon.com>
+ * @author    Ovidiu Enache <i.ovidiuenache@yahoo.com>
  * @copyright 2016 Evozon (https://www.evozon.com)
  */
 class EvozonTranslatrExtension extends Extension
@@ -39,13 +39,18 @@ class EvozonTranslatrExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->addCompilerPass(new Pass());
-
         $container->addDefinitions([
             'client' => $this->constructClient($config),
         ]);
     }
 
+    /**
+     * Configures the adapter based on configuration
+     *
+     * @param   array   $config
+     *
+     * @return  Definition
+     */
     private function constructClient($config)
     {
         $clientDefinition = new Definition('Evozon\TranslatrBundle\Clients\NullAdapter');

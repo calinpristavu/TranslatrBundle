@@ -8,14 +8,16 @@ use Evozon\TranslatrBundle\Events\GotLocalesEvent;
 use Evozon\TranslatrBundle\Events\GotTranslationsEvent;
 use Evozon\TranslatrBundle\Events\UploadEvent;
 use Evozon\TranslatrBundle\Events\DownloadEvent;
-use Onesky\Api\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-// Access token : 42412d61e38ddc607551e765065a6bb131fd689a9dbf345bb9e23e78e5daf8cf
-// Project ID : 36db9371b3fad0e2de4421a9c3edded2
-
-class PhraseAppAdapter extends Client implements ClientInterface
+/**
+ * Class PhraseAppAdapter
+ *
+ * @package     Evozon\TranslatrBundle\Clients
+ * @author      Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
+class PhraseAppAdapter implements ClientInterface
 {
     /**
      * @var array
@@ -28,7 +30,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
     protected $project;
 
     /**
-     * @var
+     * @var String
      */
     protected $localeFormat;
 
@@ -40,9 +42,9 @@ class PhraseAppAdapter extends Client implements ClientInterface
     /**
      * OneSkyAdapter constructor.
      *
-     * @param EventDispatcherInterface $dispatcher
-     * @param int $project
-     * @param array $localeFormat
+     * @param EventDispatcherInterface  $dispatcher
+     * @param int                       $project
+     * @param array                     $localeFormat
      */
     public function __construct(EventDispatcherInterface $dispatcher, $project, $localeFormat)
     {
@@ -60,13 +62,13 @@ class PhraseAppAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocales($project)
+    public function getLocales($projectId)
     {
         $ch = curl_init();
         curl_setopt_array(
             $ch,
             array(
-                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$project/locales",
+                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$projectId/locales",
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_USERPWD => "$this->apiKey:"
             )
@@ -83,13 +85,13 @@ class PhraseAppAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getFiles($project)
+    public function getFiles($projectId)
     {
         $ch = curl_init();
         curl_setopt_array(
             $ch,
             array(
-                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$project/uploads",
+                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$projectId/uploads",
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_USERPWD => "$this->apiKey:"
             )
@@ -106,7 +108,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations($project, $source, $locale)
+    public function getTranslations($projectId, $source, $locale)
     {
         $localeId = $this->getLocaleId($locale);
 
@@ -114,7 +116,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
         curl_setopt_array(
             $ch,
             array(
-                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$project/locales/$localeId/translations",
+                CURLOPT_URL => "https://api.phraseapp.com/api/v2/projects/$projectId/locales/$localeId/translations",
                 CURLOPT_RETURNTRANSFER => 1,
                 CURLOPT_USERPWD => "$this->apiKey:"
             )
@@ -240,7 +242,7 @@ class PhraseAppAdapter extends Client implements ClientInterface
     /**
      * Returns the ID of a locale
      *
-     * @param   $locale     String
+     * @param   String      $locale
      *
      * @return  int         ID of the locale
      *                      0 if locale was not found
@@ -260,12 +262,12 @@ class PhraseAppAdapter extends Client implements ClientInterface
     }
 
     /**
-     * Converts to .po text format
+     * Converts json content to .po text format
      *
-     * @param $content  String      text to be formatted
-     * @param $locale   String      the language
+     * @param   String    $content
+     * @param   String    $locale
      *
-     * @return string               text in .po format
+     * @return  String
      */
     private function convertToPo($content, $locale)
     {
@@ -292,9 +294,9 @@ msgstr \"\"
     /**
      * Returns the locale of a file from its full path
      *
-     * @param $filePath     String          The full path of the file
+     * @param   String  $filePath
      *
-     * @return              String          The locale
+     * @return  String
      */
     private function getLocaleFromFile($filePath)
     {

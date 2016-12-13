@@ -1,6 +1,6 @@
 <?php
 
-namespace Evozon\TranslatrBundle\OneSky;
+namespace Evozon\TranslatrBundle\Service;
 
 use Evozon\TranslatrBundle\Clients\ClientInterface;
 
@@ -9,6 +9,7 @@ use Evozon\TranslatrBundle\Clients\ClientInterface;
  *
  * @package   Evozon\TranslatrBundle\OneSky
  * @author    Balazs Csaba <csaba.balazs@evozon.com>
+ * @author    Ovidiu Enache <i.ovidiuenache@yahoo.com>
  * @copyright 2016 Evozon (https://www.evozon.com)
  */
 class AbstractService
@@ -23,8 +24,10 @@ class AbstractService
     protected $rootDir;
 
     /**
-     * @param ClientInterface $client
-     * @param $rootDir
+     * AbstractService constructor
+     *
+     * @param ClientInterface   $client
+     * @param String            $rootDir
      */
     public function __construct(ClientInterface $client, $rootDir)
     {
