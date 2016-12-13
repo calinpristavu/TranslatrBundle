@@ -40,6 +40,11 @@ class PhraseAppAdapter implements ClientInterface
     protected $dispatcher;
 
     /**
+     * @var
+     */
+    protected $apiKey;
+
+    /**
      * OneSkyAdapter constructor.
      *
      * @param EventDispatcherInterface  $dispatcher
@@ -48,8 +53,6 @@ class PhraseAppAdapter implements ClientInterface
      */
     public function __construct(EventDispatcherInterface $dispatcher, $project, $localeFormat)
     {
-        parent::__construct();
-
         $this->callStack = array();
 
         $this->dispatcher = $dispatcher;
@@ -304,5 +307,13 @@ msgstr \"\"
         $fileLocale = explode('.', $fileName)[1];
 
         return $fileLocale;
+    }
+
+    /**
+     * @param $apiKey
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
     }
 }
