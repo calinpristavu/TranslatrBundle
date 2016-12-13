@@ -173,7 +173,7 @@ class PhraseAppAdapter implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function download()
+    public function download($rootDir)
     {
         $raw = $this->getFiles($this->getProject());
         $response = json_decode($raw);
@@ -200,7 +200,11 @@ class PhraseAppAdapter implements ClientInterface
             $fs = new Filesystem();
             $fs->dumpFile($source, $content);
 
-            $fs->copy($source, 'app/Resources/translations/' . $source, true);
+            $fs->copy(
+                $source,
+                $rootDir . '/Resources/translations/' . $source,
+                true
+            );
             $fs->remove($source);
         }
 

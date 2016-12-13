@@ -50,7 +50,7 @@ class NullAdapter implements ClientInterface
         return ['null'];
     }
 
-    public function download()
+    public function download($rootDir)
     {
         return ['null'];
     }

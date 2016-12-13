@@ -51,9 +51,11 @@ interface ClientInterface
     /**
      * Downloads files from adapter
      *
-     * @return array
+     * @param   String  $rootDir
+     *
+     * @return  array
      */
-    public function download();
+    public function download($rootDir);
 
     /**
      * Gets the locale format

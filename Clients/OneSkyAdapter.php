@@ -114,34 +114,15 @@ class OneSkyAdapter extends Client implements ClientInterface
     {
         $raw = $this->getLocales($this->getProject());
         $response = json_decode($raw, true);
-        $data = $response['data'];
 
-        $locales = array_map(
-            function ($item) {
-                if (!$item['region']) {
-                    return $item['locale'];
-                }
-
-                $intersect = array_intersect_key(
-                    $item,
-                    array_flip($this->getLocaleFormat()['parts'])
-                );
-
-                return (count($intersect)) ? implode($this->getLocaleFormat()['separator'], $intersect) : null;
-            },
-            $data
-        );
-
-        foreach ($locales as $locale) {
-            foreach ($files as $file) {
-                $response[] = $this->files('upload', [
-                    'project_id'             => $this->getProject(),
-                    'file'                   => $file,
-                    'file_format'            => 'GNU_PO',
-                    'locale'                 => $locale,
-                    'is_keeping_all_strings' => false,
-                ]);
-            }
+        foreach ($files as $file) {
+            $response[] = $this->files('upload', [
+                'project_id'             => $this->getProject(),
+                'file'                   => $file,
+                'file_format'            => 'GNU_PO',
+                'locale'                 => $this->getLocaleFromFile($file),
+                'is_keeping_all_strings' => false,
+            ]);
         }
 
         $uploadEvent = new UploadEvent($response, $this);
@@ -153,7 +134,7 @@ class OneSkyAdapter extends Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function download()
+    public function download($rootDir)
     {
         $raw = $this->getFiles($this->getProject());
         $response = json_decode($raw, true);
@@ -180,8 +161,11 @@ class OneSkyAdapter extends Client implements ClientInterface
 
             $fs = new Filesystem();
             $fs->dumpFile($source, $content);
-
-            $fs->copy($source, 'app/Resources/translations/' . $source, true);
+            $fs->copy(
+                $source,
+                $rootDir . '/Resources/translations/' . $source,
+                true
+            );
             $fs->remove($source);
         }
 
@@ -221,5 +205,20 @@ class OneSkyAdapter extends Client implements ClientInterface
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Returns the locale of a file from its full path
+     *
+     * @param   String  $filePath
+     *
+     * @return  String
+     */
+    private function getLocaleFromFile($filePath)
+    {
+        $fileName = array_values(array_slice(explode('/', $filePath), -1))[0];
+        $fileLocale = explode('.', $fileName)[1];
+
+        return $fileLocale;
     }
 }
