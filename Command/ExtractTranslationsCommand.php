@@ -44,7 +44,7 @@ class ExtractTranslationsCommand extends AbstractCommand
 
         $io->success('Extracting translations from the application!');
 
-        $availableLocales = $this->getContainer()->getParameter('available_locales', []);
+        $availableLocales = $this->getContainer()->getParameter('available_locales');
         $availableLocales = array_map(
             function ($locale) {
                 return strtolower(substr($locale, 0, 2));
