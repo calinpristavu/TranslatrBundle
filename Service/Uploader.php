@@ -12,11 +12,6 @@ namespace Evozon\TranslatrBundle\Service;
 class Uploader extends AbstractService
 {
     /**
-     * @var bool
-     */
-    protected $isKeepingAllStrings = false;
-
-    /**
      * @return $this
      */
     public function upload()
